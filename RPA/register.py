@@ -11,18 +11,19 @@ def register_jobs(
 ):
     # Load job list
     with open(filepath, "rb") as file:
-        job_list = pickle.load(file)[:3]
+        job_list = pickle.load(file)
 
     asyncio.run(rpa_register_jobs(url_form, job_list))
 
 
 async def rpa_register_jobs(url_form, job_list):
     async with async_playwright() as context_manager:
-        browser = await context_manager.chromium.launch(headless=False)
+        browser = await context_manager.chromium.launch(headless=True)
         page = await browser.new_page()
 
         for job in job_list:
             await fill_form(page, job, url_form)
+            print(f"{job[0]}({job[2]}) in {job[1]} registered")
 
         await browser.close()
 
