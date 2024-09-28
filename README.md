@@ -35,6 +35,14 @@ Init the app with the next command, this will start a bash that you will use to 
 
 The form extraction and register jobs method can be used separately or together to allow for reuse and customization of calls
 
+### Scraping Jobs and Register in the Form
+
+The first argument is a link to a company's website on Gupy, and if no data is provided, the SEB Group link will be used. 
+
+The second argument is a link to the form that will be filled with the job information. 
+
+> python main.py rpa-jobs "https://gruposeb.gupy.io/" "https://forms.office.com/r/zfipx2RFsY"
+
 ### Scraping Job List
 
 The first argument is a link to a company's website on Gupy, and if no data is provided, the SEB Group link will be used. 
@@ -43,7 +51,7 @@ The second argument represents the path to the file where the extracted job list
 
 > python main.py extract-job-list "https://gruposeb.gupy.io/"  --filepath "joblist.pkl"
 
-### Registering jobs
+### Registering Jobs
 
 The first argument is a link to the form that will be filled with the job information. 
 
