@@ -1,6 +1,6 @@
 # RPA_Avaliation
 
-This project consists of an RPA script to automate the collection of job information from the gupy website for the SEB group (https://gruposeb.gupy.io/) and use this data to fill the forms (https://forms.office.com/r/zfipx2RFsY) and send the response
+This project consists of an RPA script to automate the collection of job information from the gupy website and use this data to fill the forms from the Google and send the response
 
 ## Requirements
 
@@ -37,19 +37,19 @@ The form extraction and register jobs method can be used separately or together 
 
 ### Scraping Jobs and Register in the Form
 
-The first argument is a link to a company's website on Gupy, and if no data is provided, the SEB Group link will be used. 
+The first argument is a link to a company's website on Gupy.
 
 The second argument is a link to the form that will be filled with the job information. 
 
-> python main.py rpa-jobs "https://gruposeb.gupy.io/" "https://forms.office.com/r/zfipx2RFsY"
+> python main.py rpa-jobs <URL from gupy:string> <Google form link:string>
 
 ### Scraping Job List
 
-The first argument is a link to a company's website on Gupy, and if no data is provided, the SEB Group link will be used. 
+The first argument is a link to a company's website on Gupy.
 
 The second argument represents the path to the file where the extracted job list will be written, which is also optional.
 
-> python main.py extract-job-list "https://gruposeb.gupy.io/"  --filepath "joblist.pkl"
+> python main.py extract-job-list <URL from gupy:string>  --filepath "joblist.pkl"
 
 ### Registering Jobs
 
@@ -57,4 +57,4 @@ The first argument is a link to the form that will be filled with the job inform
 
 The second argument represents the path to the file where the list of extracted jobs is stored.
 
-> python main.py register-jobs "https://forms.office.com/r/zfipx2RFsY" --filepath "joblist.pkl"
+> python main.py register-jobs <Google form link:string> --filepath "joblist.pkl"
