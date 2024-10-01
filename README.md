@@ -1,4 +1,4 @@
-# RPA_Avaliation
+# RPA Jobs Gupy
 
 This project consists of an RPA script to automate the collection of job information from the gupy website and use this data to fill the forms from the Google and send the response
 

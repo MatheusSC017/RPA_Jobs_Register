@@ -16,10 +16,18 @@ def extract_job_list(
 
             job_list = []
             for job in html.find_all(attrs={"data-testid": "job-list__listitem"}):
-                job_list.append({title: field.text for title, field in zip(["Cargo", "Cidade", "Efetivo?"], job.findAll("div")[1:])})
+                job_title = job.select_one('[class*="sc-f5007364-4"]').text
+                job_city = job.select_one('[class*="sc-f5007364-5"]').text
+                job_type = job.select_one('[class*="sc-f5007364-6"]').text
+
+                job_list.append({
+                    "Cargo": job_title,
+                    "Cidade": job_city,
+                    "Efetivo?": job_type
+                })
 
             with open(filepath, "w") as file:
-                json.dump(job_list, file, indent=4)
+                    json.dump(job_list, file, indent=4)
         else:
             print("Error loading the page")
     except Exception as e:
