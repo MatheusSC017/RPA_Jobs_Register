@@ -5,8 +5,8 @@ from RPA.register import register_jobs
 
 
 def rpa_jobs(
-    url_job_list: Annotated[str, typer.Argument(help="URL to the company website on gupy")] = "https://gruposeb.gupy.io/",
-    url_form: Annotated[str, typer.Argument(help="url to the company website on gupy")] = "https://forms.office.com/r/zfipx2RFsY"
+    url_job_list: Annotated[str, typer.Argument(help="URL to the company website on gupy")],
+    url_form: Annotated[str, typer.Argument(help="Url to the google form")]
 ):
     extract_job_list(url_job_list)
     register_jobs(url_form)
