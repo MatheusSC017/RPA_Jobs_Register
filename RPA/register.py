@@ -7,7 +7,10 @@ from typing_extensions import Annotated
 
 def register_jobs(
     url_form: Annotated[str, typer.Argument(help="url to the company website on gupy")],
-    filepath: Annotated[str, typer.Option(help="Path to the file where the extracted jobs will be saved")] = "joblist.json"
+    filepath: Annotated[
+        str,
+        typer.Option(help="Path to the file where the extracted jobs will be saved"),
+    ] = "joblist.json",
 ):
     # Load job list
     with open(filepath, "r") as file:
@@ -24,7 +27,9 @@ async def rpa_register_jobs(url_form, job_list):
 
             for job in job_list:
                 await fill_form(page, job, url_form)
-                print(f"{job['Cargo']}({job['Efetivo?']}) in {job['Cidade']} registered")
+                print(
+                    f"{job['Cargo']}({job['Efetivo?']}) in {job['Cidade']} registered"
+                )
 
             await browser.close()
     except Exception as e:
@@ -38,7 +43,9 @@ async def fill_form(page, job, url_form):
 
         form_fields = await page.locator('[data-automation-id="questionItem"]').all()
         for field in form_fields:
-            title = await field.locator('[data-automation-id="questionTitle"] .text-format-content').text_content()
+            title = await field.locator(
+                '[data-automation-id="questionTitle"] .text-format-content'
+            ).text_content()
 
             # Identify the field and fill in the entry
             if title == "Efetivo?":

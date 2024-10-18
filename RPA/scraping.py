@@ -7,9 +7,16 @@ from typing_extensions import Annotated
 
 
 def extract_job_list(
-    url_job_list: Annotated[str, typer.Argument(help="URL to the company website on gupy")],
-    filepath: Annotated[str, typer.Option(help="Path to the file where the extracted jobs will be saved")] = "joblist.json",
-    fields: Annotated[List[str], typer.Option(help="Name of the fields that will be used")] = ["Cargo", "Cidade", "Efetivo?"]
+    url_job_list: Annotated[
+        str, typer.Argument(help="URL to the company website on gupy")
+    ],
+    filepath: Annotated[
+        str,
+        typer.Option(help="Path to the file where the extracted jobs will be saved"),
+    ] = "joblist.json",
+    fields: Annotated[
+        List[str], typer.Option(help="Name of the fields that will be used")
+    ] = ["Cargo", "Cidade", "Efetivo?"],
 ):
     try:
         response = requests.get(url_job_list)
@@ -24,16 +31,14 @@ def extract_job_list(
 
                 if len(fields) != 3:
                     fields = fields[:2]
-                    fields.extend(["Cargo", "Cidade", "Efetivo?"][len(fields):])
+                    fields.extend(["Cargo", "Cidade", "Efetivo?"][len(fields) :])
 
-                job_list.append({
-                    fields[0]: job_title,
-                    fields[1]: job_city,
-                    fields[2]: job_type
-                })
+                job_list.append(
+                    {fields[0]: job_title, fields[1]: job_city, fields[2]: job_type}
+                )
 
             with open(filepath, "w") as file:
-                    json.dump(job_list, file, indent=4)
+                json.dump(job_list, file, indent=4)
         else:
             print("Error loading the page")
     except Exception as e:
