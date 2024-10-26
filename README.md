@@ -39,7 +39,7 @@ The form extraction and register jobs method can be used separately or together 
 
 The first argument is a link to a company's website on Gupy.
 
-The second argument is a link to the form that will be filled with the job information. 
+The second argument is a link to the form that will be filled with the job information.
 
 > python main.py rpa-jobs <URL from gupy:string> <Google form link:string>
 

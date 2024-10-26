@@ -1,6 +1,7 @@
 import asyncio
 import json
 import typer
+from typing import List
 from playwright.async_api import async_playwright
 from typing_extensions import Annotated
 
@@ -11,22 +12,25 @@ def register_jobs(
         str,
         typer.Option(help="Path to the file where the extracted jobs will be saved"),
     ] = "joblist.json",
+    fields: Annotated[
+        List[str], typer.Option(help="Name of the fields that will be used")
+    ] = ["Cargo", "Cidade", "Efetivo?"],
 ):
     # Load job list
     with open(filepath, "r") as file:
         job_list = json.load(file)
 
-    asyncio.run(rpa_register_jobs(url_form, job_list))
+    asyncio.run(rpa_register_jobs(url_form, job_list, fields))
 
 
-async def rpa_register_jobs(url_form, job_list):
+async def rpa_register_jobs(url_form, job_list, fields):
     try:
         async with async_playwright() as context_manager:
             browser = await context_manager.chromium.launch(headless=False)
             page = await browser.new_page()
 
             for job in job_list:
-                await fill_form(page, job, url_form)
+                await fill_form(page, job, url_form, fields)
                 print(
                     f"{job['Cargo']}({job['Efetivo?']}) in {job['Cidade']} registered"
                 )
@@ -36,7 +40,7 @@ async def rpa_register_jobs(url_form, job_list):
         print(f"An error occurred: {e}")
 
 
-async def fill_form(page, job, url_form):
+async def fill_form(page, job, url_form, fields):
     response = await page.goto(url_form)
     if response and response.status == 200:
         await page.wait_for_timeout(500)
@@ -48,13 +52,14 @@ async def fill_form(page, job, url_form):
             ).text_content()
 
             # Identify the field and fill in the entry
-            if title == "Efetivo?":
-                if job[title] == "Efetivo":
-                    await field.locator("input").first.check()
+            if title in fields:
+                if title == fields[-1]:
+                    if job[title] == "Efetivo":
+                        await field.locator("input").first.check()
+                    else:
+                        await field.locator("input").last.check()
                 else:
-                    await field.locator("input").last.check()
-            else:
-                await field.locator("input").fill(job[title])
+                    await field.locator("input").fill(job[title])
             await page.wait_for_timeout(500)
 
         await page.locator('[data-automation-id="submitButton"]').click()
